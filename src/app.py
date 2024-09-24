@@ -5,7 +5,6 @@ from werkzeug.security import generate_password_hash
 from flask_session import Session
 from config import config
 from db_config import db
-# from models.ModelUser import ModelUser
 from models.entities.User import User 
 
 app = Flask (__name__)
@@ -39,14 +38,15 @@ def register():
         number_phone = data.get('number_phone')
         email = data.get('email')
         fullname = data.get('fullname')
+        age = data.get('age')
         
         existing_user  = User.query.filter_by(username = username).first()
 
         if existing_user: 
             return jsonify({"Error": "Usuario ya registrado"}),400
             
-        user = User(username=username, password=password, number_phone=number_phone, email=email, fullname=fullname)
-
+        user = User(username=username, password=password, number_phone=number_phone, email=email, fullname=fullname, age=age)
+        
         try: 
             db.session.add(user)
             db.session.commit()
@@ -65,7 +65,8 @@ def register():
                 'username': user.username,
                 'fullname': user.fullname,
                 'number_phone': user.number_phone,
-                'email': user.email
+                'email': user.email,
+                'age': user.age
             }
             result.append(user_data)
         return jsonify(result)
@@ -84,6 +85,7 @@ def register():
         user.number_phone = data.get('number_phone', user.number_phone)
         user.email = data.get('email', user.email)
         user.fullname = data.get('fullname', user.fullname)
+        user.age = data.get('age', user.age)
 
         try: 
             db.session.commit()

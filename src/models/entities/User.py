@@ -9,6 +9,7 @@ class User(db.Model):
     email = db.Column(db.String)
     number_phone = db.Column(db.String)
     fullname = db.Column(db.String)
+    age = db.Column(db.Integer)
 
     def __resp__(self):
         return "<User %r>" % self.username
